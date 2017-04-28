@@ -5,11 +5,11 @@ _Project templates for `stack new` that we use_
 
 ### 1. Copy the **raw** link for the template
 
-i.e. `https://github.com/theam/stack-templates/blob/master/transient-webapp.hsfiles`
+i.e. `https://github.com/theam/stack-templates/raw/master/transient-webapp.hsfiles`
 
 ### 2. Use it!
 
-`stack new <your-project-name> https://github.com/theam/stack-templates/blob/master/transient-webapp.hsfiles`
+`stack new <your-project-name> https://github.com/theam/stack-templates/raw/master/transient-webapp.hsfiles`
 
 ## Specific stuff of each template
 

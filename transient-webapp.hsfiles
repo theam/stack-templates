@@ -73,18 +73,8 @@ run :: IO ()
 run = simpleWebApp 8080 $ do
   local $ render view
 
-
-#ifdef ghcjs_HOST_OS
-
 view :: Widget ()
-view = rawHtml $ h1 (pack "Hello world" :: JSString)
-
-#else
-
-view :: Widget ()
-view = return ()
-
-#endif
+view = rawHtml $ h1 ("Hello world" :: String)
 
 {-# START_FILE LICENSE #-}
 Copyright {{author-name}}{{^author-name}}Author name here{{/author-name}} (c) {{year}}{{^year}}2017{{/year}}

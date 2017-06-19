@@ -45,11 +45,25 @@ f :: Int -> Int
 f x = x * 2 + 30
 ```
 
-And evaluate them with `haskell eval` blocks:
+Write IO actions using `haskell do` blocks:
+
+```haskell do
+x <- readFile "src/Main.hs"
+```
+
+And evaluate expressions with `haskell eval` blocks:
 
 ```haskell eval
 show (f 20)
 ```
+
+You can access what was written in `do` blocks!
+
+```haskell eval
+show x
+```
+
+Press `CTRL + Return` to compile (`CMD + Return` on Mac).
 {-# START_FILE LICENSE #-}
 Copyright {{author-name}}{{^author-name}}Author name here{{/author-name}} (c) {{year}}{{^year}}2017{{/year}}
 

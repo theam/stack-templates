@@ -12,7 +12,7 @@ extra-source-files:
 - README.md
 
 dependencies:
-  - base >= 4.7 && < 5
+  - base >= 4.6 && < 5
 ##########################################
 # HASKELL.DO DEPENDENCIES, DO NOT REMOVE #
 ##########################################
@@ -118,6 +118,8 @@ packages:
     - plotlyhs
     - lucid-extras
 
-extra-deps: []
+extra-deps:
+- inliterate-0.1.0
+- text-1.2.2.1
 flags: {}
 extra-package-dbs: []

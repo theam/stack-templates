@@ -119,7 +119,6 @@ packages:
     - lucid-extras
 
 extra-deps:
-- inliterate-0.1.0
 - text-1.2.2.1
 flags: {}
 extra-package-dbs: []

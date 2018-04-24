@@ -1,0 +1,268 @@
+{-# START_FILE package.yaml #-}
+name: {{ name }}
+version: '0.0.0'
+github: "{{github-username}}{{^github-username}}githubuser{{/github-username}}/{{name}}"
+license: MIT
+author: "{{author-name}}{{^author-name}}Author name here{{/author-name}}"
+maintainer: "{{author-name}}{{^author-name}}Author name here{{/author-name}}"
+synopsis: A new Granite project
+description: Please see README.md
+category: Other
+
+extra-source-files:
+- CHANGELOG.md
+- LICENSE.md
+- package.yaml
+- README.md
+- stack.yaml
+
+ghc-options:
+  - -Wall
+  - -Werror
+
+default-extensions:
+  - BangPatterns
+  - BinaryLiterals
+  - ConstrainedClassMethods
+  - ConstraintKinds
+  - DataKinds
+  - DefaultSignatures
+  - DeriveDataTypeable
+  - DeriveGeneric
+  - DeriveFoldable
+  - DeriveFunctor
+  - DeriveTraversable
+  - EmptyCase
+  - EmptyDataDecls
+  - ExistentialQuantification
+  - ExplicitForAll
+  - ExplicitNamespaces
+  - FlexibleContexts
+  - FlexibleInstances
+  - FunctionalDependencies
+  - GADTs
+  - GADTSyntax
+  - GeneralizedNewtypeDeriving
+  - InstanceSigs
+  - KindSignatures
+  - LambdaCase
+  - LiberalTypeSynonyms
+  - MagicHash
+  - MonoLocalBinds
+  - MultiParamTypeClasses
+  - MultiWayIf
+  - NamedFieldPuns
+  - NamedWildCards
+  - NegativeLiterals
+  - NoImplicitPrelude
+  - NumDecimals
+  - OverloadedStrings
+  - PackageImports
+  - ParallelListComp
+  - PatternGuards
+  - PolyKinds
+  - RankNTypes
+  - RecordWildCards
+  - RecursiveDo
+  - RelaxedPolyRec
+  - ScopedTypeVariables
+  - StandaloneDeriving
+  - TemplateHaskell
+  - TraditionalRecordSyntax
+  - TypeApplications
+  - TypeFamilies
+  - TypeOperators
+  - TypeSynonymInstances
+  - UnboxedTuples
+  - UnliftedFFITypes
+
+library:
+  dependencies:
+    - base
+  source-dirs:
+    - api
+    - config
+    - domain
+    - logic
+
+executables:
+  {{ name }}:
+    source-dirs: bin
+    main: Run.hs
+    dependencies:
+    - base
+    - {{ name }}
+    ghc-options:
+    - -rtsopts
+    - -threaded
+    - -with-rtsopts=-N
+
+tests:
+  {{ name }}-spec:
+    source-dirs: specs
+    main: Spec.hs
+    dependencies:
+    - base
+    - {{ name }}
+    - hspec
+    - QuickCheck
+    ghc-options:
+    - -rtsopts
+    - -threaded
+    - -with-rtsopts=-N
+
+{-# START_FILE .gitignore #-}
+# Stack uses this directory as scratch space.
+/.stack-work/
+# Stack generates the Cabal file from `package.yaml` through hpack.
+/*.cabal
+
+{-# START_FILE CHANGELOG.md #-}
+# Change log
+
+{{ name }} uses [Semantic Versioning][].
+The change log is available through the [releases on GitHub][].
+
+[Semantic Versioning]: http://semver.org/spec/v2.0.0.html
+[releases on GitHub]: https://github.com/{{github-username}}{{^github-username}}githubuser{{/github-username}}/{{ name }}/releases
+
+{-# START_FILE LICENSE.md #-}
+[The MIT License (MIT)][]
+
+Copyright (c) {{year}}{{^year}}2018{{/year}} {{author-name}}{{^author-name}}Author name here{{/author-name}}
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+[The MIT License (MIT)]: https://opensource.org/licenses/MIT
+
+{-# START_FILE README.md #-}
+# [{{ name }}][]
+
+Write something useful here!
+
+[{{ name }}]: https://github.com/{{github-username}}{{^github-username}}githubuser{{/github-username}}/{{ name }}
+
+{-# START_FILE Setup.hs #-}
+-- This script is used to build and install your package. Typically you don't
+-- need to change it. The Cabal documentation has more information about this
+-- file: <https://www.haskell.org/cabal/users-guide/installing-packages.html>.
+import qualified Distribution.Simple
+
+main :: IO ()
+main = Distribution.Simple.defaultMain
+
+{-# START_FILE bin/Run.hs #-}
+-- It is generally a good idea to keep all your business logic in your library
+-- and only use it in the executable. Doing so allows others to use what you
+-- wrote in their libraries.
+
+import Granite
+
+main :: IO ()
+main = putTextLn "Hello world"
+
+{-# START_FILE domain/events/ExampleEvent.hs #-}
+module Domain.Events.ExampleEvent where
+
+import Granite
+
+data ExampleEvent = ExampleEvent
+  { idNumber :: Int
+  , name     :: Text
+  }
+
+{-# START_FILE domain/commands/ExampleCommand.hs #-}
+module Domain.Commands.ExampleCommand where
+
+import Granite
+
+data ExampleCommand = ExampleCommand
+  { idNumber :: Int
+  , name     :: Text
+  }
+
+{-# START_FILE domain/models/ExampleModel.hs #-}
+module Domain.Commands.ExampleCommand where
+
+import Granite
+
+data ExampleModel = ExampleModel
+  { idNumber         :: Int
+  , accumulatedNames :: [Text]
+  }
+
+{-# START_FILE login/handlers/ExampleHandler.hs #-}
+module Logic.Handlers.ExampleHandler (main) where
+
+import Granite
+
+import           Domain
+import qualified Domain.Commands.ExampleCommand as ExampleCommand
+import qualified Domain.Events.ExampleEvent     as ExampleEvent
+
+exampleHandler :: ExampleCommand -> ExampleEvent
+exampleHandler (ExampleCommand idNumber name) = ExampleEvent idNumber name
+
+{-# START_FILE logic/processors/ExampleProcessor.hs #-}
+module Logic.Processors.ExampleProcessor where
+
+import Granite
+
+import           Domain
+import qualified Domain.Models.ExampleModel as ExampleModel
+import qualified Domain.Events.ExampleEvent as ExampleEvent
+
+exampleProcessor :: [ExampleEvent] -> ExampleModel
+exampleProcessor events = ExampleModel
+  { ExampleModel.idNumber = 1337
+  , ExampleModel.accumulatedNames = accumulatedNames
+  }
+ where
+  accumulatedNames =
+    events
+    |> map ExampleEvent.name
+    |> mconcat
+
+{-# START_FILE config/ExampleConfig.hs #-}
+module Logic.Handlers.ExampleHandler (main) where
+
+import Granite.Config
+
+
+exampleConfig :: Configuration
+exampleConfig = do
+  logger   StdOut
+  streamer Simple
+
+{-# START_FILE specs/Spec.hs #-}
+import Test.Hspec
+import Test.QuickCheck
+import Control.Exception (evaluate)
+
+main :: IO ()
+main = hspec $ do
+  describe "Prelude.head" $ do
+    it "returns the first element of a list" $ do
+      head [23 ..] `shouldBe` (23 :: Int)
+
+    it "returns the first element of an *arbitrary* list" $
+      property $ \x xs -> head (x:xs) == (x :: Int)
+
+    it "throws an exception if used with an empty list" $ do
+      evaluate (head []) `shouldThrow` anyException
